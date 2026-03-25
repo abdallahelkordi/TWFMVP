@@ -33,6 +33,12 @@ This MVP is being built as a prototype to:
 - create a clear structure
 - prepare for future full-stack development
 
+The prototype is focused on product clarity first:
+- what the platform is
+- who it serves
+- why it matters
+- how it can scale into a category-defining product
+
 ## Future Roadmap
 
 ### Phase 1
