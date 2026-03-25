@@ -56,6 +56,13 @@ This MVP is being built as a prototype to:
 
 ## Brand Direction
 TWF is designed as a premium, modern, and credible football platform focused fully on women’s football.
+TWF should feel:
+- premium
+- credible
+- modern
+- football-native
+- structured
+- ambitious
 
 ## Status
 Prototype in progress.
