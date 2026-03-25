@@ -619,4 +619,7 @@ a {
   .player-card-main {
     position: static;
   }
+
+.roadmap-grid .info-card h3 {
+  font-size: 1.2rem;
 }
