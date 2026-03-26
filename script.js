@@ -467,17 +467,16 @@ function renderPublicClubs() {
     </article>
   `;
 
-  if (grid) {
-    grid.innerHTML = clubs.length
-      ? clubs.map((club, index) => card(club, index)).join("")
-      : `<div class="data-card-empty">No clubs added yet.</div>`;
-  }
+  const fullHtml = clubs.length
+    ? clubs.map((club, index) => card(club, index)).join("")
+    : `<div class="data-card-empty">No clubs added yet.</div>`;
 
-  if (homeGrid) {
-    homeGrid.innerHTML = clubs.length
-      ? clubs.slice(0, 3).map((club, index) => card(club, index)).join("")
-      : `<div class="data-card-empty">No clubs added yet.</div>`;
-  }
+  const homeHtml = clubs.length
+    ? clubs.slice(0, 3).map((club, index) => card(club, index)).join("")
+    : `<div class="data-card-empty">No clubs added yet.</div>`;
+
+  if (grid) grid.innerHTML = fullHtml;
+  if (homeGrid) homeGrid.innerHTML = homeHtml;
 }
 
 function renderPublicLeagues() {
@@ -499,17 +498,16 @@ function renderPublicLeagues() {
     </article>
   `;
 
-  if (grid) {
-    grid.innerHTML = leagues.length
-      ? leagues.map((league) => card(league)).join("")
-      : `<div class="data-card-empty">No leagues added yet.</div>`;
-  }
+  const fullHtml = leagues.length
+    ? leagues.map((league) => card(league)).join("")
+    : `<div class="data-card-empty">No leagues added yet.</div>`;
 
-  if (homeGrid) {
-    homeGrid.innerHTML = leagues.length
-      ? leagues.slice(0, 3).map((league) => card(league)).join("")
-      : `<div class="data-card-empty">No leagues added yet.</div>`;
-  }
+  const homeHtml = leagues.length
+    ? leagues.slice(0, 3).map((league) => card(league)).join("")
+    : `<div class="data-card-empty">No leagues added yet.</div>`;
+
+  if (grid) grid.innerHTML = fullHtml;
+  if (homeGrid) homeGrid.innerHTML = homeHtml;
 }
 function renderPlayerProfile() {
   const container = document.getElementById("playerProfile");
@@ -648,7 +646,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderPublicPlayers();
     renderPublicClubs();
     renderPublicLeagues();
-    
+
     renderPlayerProfile();
     renderClubProfile();
 
