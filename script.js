@@ -149,7 +149,7 @@ function renderPlayersList() {
     ? players.map((player, index) => `
       <div class="admin-item">
         <div class="admin-item-main">
-          ${player.image ? `<img src="${player.image}" alt="${player.name}" class="admin-thumb">` : ""}
+          ${player.image ? `<img src="${player.image}" alt="${player.name}" class="admin-thumb" />` : ""}
           <div>
             <strong>${player.name || "-"}</strong>
             <p>DOB: ${player.dob || "-"} • Age: ${player.age || "-"}</p>
