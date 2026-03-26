@@ -352,7 +352,7 @@ function setupForms() {
 
       try {
         const logoFile = document.getElementById("leagueLogo").files[0];
-        const logoData = await readFileAsDataURL(logoFile);
+        const logoUrl = await uploadImageToSupabase("league-logos", logoFile);
 
         const name = document.getElementById("leagueName").value.trim();
         const level = document.getElementById("leagueLevel").value.trim();
@@ -364,24 +364,26 @@ function setupForms() {
           return;
         }
 
-        const leagues = getStorage("twf_leagues");
-        leagues.push({
-          name,
-          logo: logoData,
-          level,
-          founded,
-          country
-        });
+        const { error } = await supabaseClient
+          .from("leagues")
+          .insert([
+            {
+              name,
+              logo_url: logoUrl,
+              level,
+              founded: Number(founded),
+              country
+            }
+          ]);
 
-        setStorage("twf_leagues", leagues);
+        if (error) throw error;
+
         leagueForm.reset();
-        renderLeaguesList();
-        populateLeagueOptions();
-        renderPublicLeagues();
-        showAdminMessage("League added successfully.");
+        await loadLeaguesFromSupabase();
+        showAdminMessage("League added to Supabase successfully.");
       } catch (error) {
         console.error("League form error:", error);
-        showAdminMessage("Failed to add league.", true);
+        showAdminMessage("Failed to add league to Supabase.", true);
       }
     });
   }
@@ -682,6 +684,24 @@ function openClub(index) {
   localStorage.setItem("twf_selected_club", JSON.stringify(club));
   window.location.href = "club.html";
 }
+async function loadLeaguesFromSupabase() {
+  const leagues = await fetchLeaguesFromSupabase();
+
+  const normalizedLeagues = leagues.map((league) => ({
+    id: league.id,
+    name: league.name,
+    logo: league.logo_url || "",
+    level: league.level,
+    founded: league.founded,
+    country: league.country
+  }));
+
+  setStorage("twf_leagues", normalizedLeagues);
+
+  renderLeaguesList();
+  populateLeagueOptions();
+  renderPublicLeagues();
+}
 document.addEventListener("DOMContentLoaded", function () {
   try {
     createSeedData();
@@ -700,6 +720,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     renderPlayerProfile();
     renderClubProfile();
+
+    loadLeaguesFromSupabase();
 
     console.log("TWF loaded successfully");
   } catch (error) {
