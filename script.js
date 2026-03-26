@@ -1,5 +1,11 @@
 function getStorage(key) {
-  return JSON.parse(localStorage.getItem(key)) || [];
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    console.error("Storage read error:", key, error);
+    return [];
+  }
 }
 
 function setStorage(key, data) {
@@ -25,22 +31,29 @@ function calculateAge(dob) {
 }
 
 function readFileAsDataURL(file) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (!file) {
       resolve("");
       return;
     }
 
     const reader = new FileReader();
+
     reader.onload = function (event) {
       resolve(event.target.result);
     };
+
+    reader.onerror = function () {
+      reject(new Error("File reading failed"));
+    };
+
     reader.readAsDataURL(file);
   });
 }
 
 function createSeedData() {
-  if (!localStorage.getItem("twf_leagues")) {
+  const leagues = getStorage("twf_leagues");
+  if (!Array.isArray(leagues) || leagues.length === 0) {
     setStorage("twf_leagues", [
       {
         name: "Egypt Women’s Premier League",
@@ -52,7 +65,8 @@ function createSeedData() {
     ]);
   }
 
-  if (!localStorage.getItem("twf_clubs")) {
+  const clubs = getStorage("twf_clubs");
+  if (!Array.isArray(clubs) || clubs.length === 0) {
     setStorage("twf_clubs", [
       {
         name: "FC Cairo Women",
@@ -75,7 +89,8 @@ function createSeedData() {
     ]);
   }
 
-  if (!localStorage.getItem("twf_players")) {
+  const players = getStorage("twf_players");
+  if (!Array.isArray(players) || players.length === 0) {
     setStorage("twf_players", [
       {
         name: "Aya Kamel",
@@ -129,18 +144,19 @@ function renderPlayersList() {
   if (!container) return;
 
   const players = getStorage("twf_players");
+
   container.innerHTML = players.length
     ? players.map((player, index) => `
       <div class="admin-item">
         <div class="admin-item-main">
           ${player.image ? `<img src="${player.image}" alt="${player.name}" class="admin-thumb">` : ""}
           <div>
-            <strong>${player.name}</strong>
-            <p>DOB: ${player.dob} • Age: ${player.age}</p>
-            <p>Club: ${player.club}</p>
-            <p>Position: ${player.position} • No. ${player.shirtNumber}</p>
-            <p>Apps: ${player.appearances} • Goals: ${player.goals} • Assists: ${player.assists}</p>
-            <p>TWF Value: ${player.value}</p>
+            <strong>${player.name || "-"}</strong>
+            <p>DOB: ${player.dob || "-"} • Age: ${player.age || "-"}</p>
+            <p>Club: ${player.club || "-"}</p>
+            <p>Position: ${player.position || "-"} • No. ${player.shirtNumber || "-"}</p>
+            <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
+            <p>TWF Value: ${player.value || 0}</p>
           </div>
         </div>
         <button class="delete-btn" onclick="deletePlayer(${index})">Delete</button>
@@ -154,17 +170,18 @@ function renderClubsList() {
   if (!container) return;
 
   const clubs = getStorage("twf_clubs");
+
   container.innerHTML = clubs.length
     ? clubs.map((club, index) => `
       <div class="admin-item">
         <div class="admin-item-main">
           ${club.logo ? `<img src="${club.logo}" alt="${club.name}" class="admin-thumb">` : ""}
           <div>
-            <strong>${club.name}</strong>
+            <strong>${club.name || "-"}</strong>
             <p>League: ${club.league || "Not assigned"}</p>
-            <p>${club.country} • ${club.area}</p>
-            <p>Founded: ${club.founded}</p>
-            <p>Kit Colours: ${club.kitColors}</p>
+            <p>${club.country || "-"} • ${club.area || "-"}</p>
+            <p>Founded: ${club.founded || "-"}</p>
+            <p>Kit Colours: ${club.kitColors || "-"}</p>
           </div>
         </div>
         <button class="delete-btn" onclick="deleteClub(${index})">Delete</button>
@@ -178,16 +195,17 @@ function renderLeaguesList() {
   if (!container) return;
 
   const leagues = getStorage("twf_leagues");
+
   container.innerHTML = leagues.length
     ? leagues.map((league, index) => `
       <div class="admin-item">
         <div class="admin-item-main">
           ${league.logo ? `<img src="${league.logo}" alt="${league.name}" class="admin-thumb">` : ""}
           <div>
-            <strong>${league.name}</strong>
-            <p>Level: ${league.level}</p>
-            <p>Founded: ${league.founded}</p>
-            <p>Country: ${league.country}</p>
+            <strong>${league.name || "-"}</strong>
+            <p>Level: ${league.level || "-"}</p>
+            <p>Founded: ${league.founded || "-"}</p>
+            <p>Country: ${league.country || "-"}</p>
           </div>
         </div>
         <button class="delete-btn" onclick="deleteLeague(${index})">Delete</button>
@@ -236,6 +254,14 @@ function clearLeagues() {
   populateLeagueOptions();
 }
 
+function showAdminMessage(message, isError = false) {
+  const box = document.getElementById("adminMessage");
+  if (!box) return;
+
+  box.textContent = message;
+  box.className = isError ? "admin-message error" : "admin-message success";
+}
+
 function setupAgeCalculation() {
   const dobInput = document.getElementById("playerDob");
   const ageInput = document.getElementById("playerAge");
@@ -253,28 +279,50 @@ function setupForms() {
     playerForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const imageFile = document.getElementById("playerImage").files[0];
-      const imageData = await readFileAsDataURL(imageFile);
+      try {
+        const imageFile = document.getElementById("playerImage").files[0];
+        const imageData = await readFileAsDataURL(imageFile);
 
-      const players = getStorage("twf_players");
-      players.push({
-        name: document.getElementById("playerName").value,
-        dob: document.getElementById("playerDob").value,
-        age: document.getElementById("playerAge").value,
-        club: document.getElementById("playerClub").value,
-        position: document.getElementById("playerPosition").value,
-        shirtNumber: document.getElementById("playerNumber").value,
-        appearances: document.getElementById("playerAppearances").value,
-        goals: document.getElementById("playerGoals").value,
-        assists: document.getElementById("playerAssists").value,
-        value: document.getElementById("playerValue").value,
-        image: imageData
-      });
+        const name = document.getElementById("playerName").value.trim();
+        const dob = document.getElementById("playerDob").value;
+        const age = document.getElementById("playerAge").value;
+        const club = document.getElementById("playerClub").value;
+        const position = document.getElementById("playerPosition").value;
+        const shirtNumber = document.getElementById("playerNumber").value;
+        const appearances = document.getElementById("playerAppearances").value;
+        const goals = document.getElementById("playerGoals").value;
+        const assists = document.getElementById("playerAssists").value;
+        const value = document.getElementById("playerValue").value;
 
-      setStorage("twf_players", players);
-      playerForm.reset();
-      document.getElementById("playerAge").value = "";
-      renderPlayersList();
+        if (!name || !dob || !age || !club || !position) {
+          showAdminMessage("Please fill all required player fields.", true);
+          return;
+        }
+
+        const players = getStorage("twf_players");
+        players.push({
+          name,
+          dob,
+          age,
+          club,
+          position,
+          shirtNumber,
+          appearances,
+          goals,
+          assists,
+          value,
+          image: imageData
+        });
+
+        setStorage("twf_players", players);
+        playerForm.reset();
+        document.getElementById("playerAge").value = "";
+        renderPlayersList();
+        showAdminMessage("Player added successfully.");
+      } catch (error) {
+        console.error("Player form error:", error);
+        showAdminMessage("Failed to add player.", true);
+      }
     });
   }
 
@@ -283,24 +331,42 @@ function setupForms() {
     clubForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const logoFile = document.getElementById("clubLogo").files[0];
-      const logoData = await readFileAsDataURL(logoFile);
+      try {
+        const logoFile = document.getElementById("clubLogo").files[0];
+        const logoData = await readFileAsDataURL(logoFile);
 
-      const clubs = getStorage("twf_clubs");
-      clubs.push({
-        name: document.getElementById("clubName").value,
-        logo: logoData,
-        league: document.getElementById("clubLeague").value,
-        country: document.getElementById("clubCountry").value,
-        area: document.getElementById("clubArea").value,
-        founded: document.getElementById("clubFounded").value,
-        kitColors: document.getElementById("clubKitColors").value
-      });
+        const name = document.getElementById("clubName").value.trim();
+        const league = document.getElementById("clubLeague").value;
+        const country = document.getElementById("clubCountry").value.trim();
+        const area = document.getElementById("clubArea").value.trim();
+        const founded = document.getElementById("clubFounded").value;
+        const kitColors = document.getElementById("clubKitColors").value.trim();
 
-      setStorage("twf_clubs", clubs);
-      clubForm.reset();
-      renderClubsList();
-      populateClubOptions();
+        if (!name || !country || !area || !founded || !kitColors) {
+          showAdminMessage("Please fill all required club fields.", true);
+          return;
+        }
+
+        const clubs = getStorage("twf_clubs");
+        clubs.push({
+          name,
+          logo: logoData,
+          league,
+          country,
+          area,
+          founded,
+          kitColors
+        });
+
+        setStorage("twf_clubs", clubs);
+        clubForm.reset();
+        renderClubsList();
+        populateClubOptions();
+        showAdminMessage("Club added successfully.");
+      } catch (error) {
+        console.error("Club form error:", error);
+        showAdminMessage("Failed to add club.", true);
+      }
     });
   }
 
@@ -309,33 +375,55 @@ function setupForms() {
     leagueForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const logoFile = document.getElementById("leagueLogo").files[0];
-      const logoData = await readFileAsDataURL(logoFile);
+      try {
+        const logoFile = document.getElementById("leagueLogo").files[0];
+        const logoData = await readFileAsDataURL(logoFile);
 
-      const leagues = getStorage("twf_leagues");
-      leagues.push({
-        name: document.getElementById("leagueName").value,
-        logo: logoData,
-        level: document.getElementById("leagueLevel").value,
-        founded: document.getElementById("leagueFounded").value,
-        country: document.getElementById("leagueCountry").value
-      });
+        const name = document.getElementById("leagueName").value.trim();
+        const level = document.getElementById("leagueLevel").value.trim();
+        const founded = document.getElementById("leagueFounded").value;
+        const country = document.getElementById("leagueCountry").value.trim();
 
-      setStorage("twf_leagues", leagues);
-      leagueForm.reset();
-      renderLeaguesList();
-      populateLeagueOptions();
+        if (!name || !level || !founded || !country) {
+          showAdminMessage("Please fill all required league fields.", true);
+          return;
+        }
+
+        const leagues = getStorage("twf_leagues");
+        leagues.push({
+          name,
+          logo: logoData,
+          level,
+          founded,
+          country
+        });
+
+        setStorage("twf_leagues", leagues);
+        leagueForm.reset();
+        renderLeaguesList();
+        populateLeagueOptions();
+        showAdminMessage("League added successfully.");
+      } catch (error) {
+        console.error("League form error:", error);
+        showAdminMessage("Failed to add league.", true);
+      }
     });
   }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  createSeedData();
-  setupAgeCalculation();
-  populateClubOptions();
-  populateLeagueOptions();
-  setupForms();
-  renderPlayersList();
-  renderClubsList();
-  renderLeaguesList();
+  try {
+    createSeedData();
+    setupAgeCalculation();
+    populateClubOptions();
+    populateLeagueOptions();
+    setupForms();
+    renderPlayersList();
+    renderClubsList();
+    renderLeaguesList();
+    console.log("TWF admin loaded successfully");
+  } catch (error) {
+    console.error("Init error:", error);
+    showAdminMessage("There is a setup error in the admin panel.", true);
+  }
 });
