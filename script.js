@@ -420,7 +420,7 @@ function renderPublicPlayers() {
 
   const fullHtml = players.length
     ? players.map((player) => `
-      <article class="data-card">
+      <article class="data-card" onclick="openPlayer(${index})" style="cursor:pointer;">
         <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${player.name || "-"}</h3>
@@ -438,7 +438,7 @@ function renderPublicPlayers() {
 
   const homeHtml = players.length
     ? players.slice(0, 3).map((player) => `
-      <article class="data-card">
+      <article class="data-card" onclick="openPlayer(${index})" style="cursor:pointer;">
         <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${player.name || "-"}</h3>
