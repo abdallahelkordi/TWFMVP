@@ -539,6 +539,66 @@ function renderPublicLeagues() {
   if (grid) grid.innerHTML = fullHtml;
   if (homeGrid) homeGrid.innerHTML = homeHtml;
 }
+function renderPlayerProfile() {
+  const container = document.getElementById("playerProfile");
+  if (!container) return;
+
+  const player = JSON.parse(localStorage.getItem("twf_selected_player"));
+
+  if (!player) {
+    container.innerHTML = `<p class="data-card-empty">Player not found.</p>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="player-profile">
+      
+      <div class="player-profile-header">
+        <div class="player-profile-image" 
+          style="${player.image ? `background-image: url('${player.image}');` : ''}">
+        </div>
+
+        <div class="player-profile-main">
+          <h1>${player.name}</h1>
+          <p>${player.position} • ${player.club}</p>
+
+          <div class="player-profile-meta">
+            <span>Age: ${player.age}</span>
+            <span>No. ${player.shirtNumber}</span>
+          </div>
+
+          <div class="player-profile-value">
+            TWF Value: ${player.value}
+          </div>
+        </div>
+      </div>
+
+      <div class="player-profile-stats">
+        <div class="stat-box">
+          <p>Appearances</p>
+          <strong>${player.appearances}</strong>
+        </div>
+
+        <div class="stat-box">
+          <p>Goals</p>
+          <strong>${player.goals}</strong>
+        </div>
+
+        <div class="stat-box">
+          <p>Assists</p>
+          <strong>${player.assists}</strong>
+        </div>
+      </div>
+
+      <div class="player-profile-info">
+        <p><strong>Date of Birth:</strong> ${player.dob}</p>
+        <p><strong>Club:</strong> ${player.club}</p>
+        <p><strong>Position:</strong> ${player.position}</p>
+      </div>
+
+    </div>
+  `;
+}
 document.addEventListener("DOMContentLoaded", function () {
   try {
     createSeedData();
@@ -554,6 +614,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderPublicPlayers();
     renderPublicClubs();
     renderPublicLeagues();
+    renderPlayerProfile();
 
     console.log("TWF loaded successfully");
   } catch (error) {
