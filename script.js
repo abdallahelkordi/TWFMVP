@@ -148,7 +148,11 @@ function renderPlayersList() {
   container.innerHTML = players.length
     ? players.map((player, index) => `
       <div class="admin-simple-item">
-        ${player.image ? `<img src="${player.image}" alt="${player.name}" class="admin-thumb" />` : `<div class="admin-thumb admin-thumb-placeholder">P</div>`}
+        ${
+          player.image
+            ? `<div class="admin-thumb-box" style="background-image: url('${player.image.replace(/'/g, "\\'")}');"></div>`
+            : `<div class="admin-thumb-box admin-thumb-placeholder">P</div>`
+        }
         <div class="admin-simple-content">
           <strong>${player.name || "-"}</strong>
           <p>${player.position || "-"} • ${player.club || "-"} • No. ${player.shirtNumber || "-"}</p>
@@ -171,7 +175,11 @@ function renderClubsList() {
   container.innerHTML = clubs.length
     ? clubs.map((club, index) => `
       <div class="admin-simple-item">
-        ${club.logo ? `<img src="${club.logo}" alt="${club.name}" class="admin-thumb" />` : `<div class="admin-thumb admin-thumb-placeholder">C</div>`}
+        ${
+          club.logo
+            ? `<div class="admin-thumb-box" style="background-image: url('${club.logo.replace(/'/g, "\\'")}');"></div>`
+            : `<div class="admin-thumb-box admin-thumb-placeholder">C</div>`
+        }
         <div class="admin-simple-content">
           <strong>${club.name || "-"}</strong>
           <p>League: ${club.league || "Not assigned"}</p>
@@ -194,7 +202,11 @@ function renderLeaguesList() {
   container.innerHTML = leagues.length
     ? leagues.map((league, index) => `
       <div class="admin-simple-item">
-        ${league.logo ? `<img src="${league.logo}" alt="${league.name}" class="admin-thumb" />` : `<div class="admin-thumb admin-thumb-placeholder">L</div>`}
+        ${
+          league.logo
+            ? `<div class="admin-thumb-box" style="background-image: url('${league.logo.replace(/'/g, "\\'")}');"></div>`
+            : `<div class="admin-thumb-box admin-thumb-placeholder">L</div>`
+        }
         <div class="admin-simple-content">
           <strong>${league.name || "-"}</strong>
           <p>Level: ${league.level || "-"}</p>
