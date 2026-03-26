@@ -76,15 +76,6 @@ function createSeedData() {
         area: "Cairo",
         founded: 2018,
         kitColors: "Green and White"
-      },
-      {
-        name: "Alexandria SC",
-        logo: "",
-        league: "Egypt Women’s Premier League",
-        country: "Egypt",
-        area: "Alexandria",
-        founded: 2015,
-        kitColors: "Blue and White"
       }
     ]);
   }
@@ -139,126 +130,6 @@ function populateLeagueOptions() {
   });
 }
 
-function renderPlayersList() {
-  const container = document.getElementById("playersList");
-  if (!container) return;
-
-  const players = getStorage("twf_players");
-
-  container.innerHTML = players.length
-    ? players.map((player, index) => `
-      <div class="admin-simple-item">
-        ${
-          player.image
-            ? `<div class="admin-thumb-box" style="background-image: url('${player.image.replace(/'/g, "\\'")}');"></div>`
-            : `<div class="admin-thumb-box admin-thumb-placeholder">P</div>`
-        }
-        <div class="admin-simple-content">
-          <strong>${player.name || "-"}</strong>
-          <p>${player.position || "-"} • ${player.club || "-"} • No. ${player.shirtNumber || "-"}</p>
-          <p>DOB: ${player.dob || "-"} • Age: ${player.age || "-"}</p>
-          <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
-          <p>TWF Value: ${player.value || 0}</p>
-        </div>
-        <button class="delete-btn" onclick="deletePlayer(${index})">Delete</button>
-      </div>
-    `).join("")
-    : `<p class="empty-text">No players added yet.</p>`;
-}
-
-function renderClubsList() {
-  const container = document.getElementById("clubsList");
-  if (!container) return;
-
-  const clubs = getStorage("twf_clubs");
-
-  container.innerHTML = clubs.length
-    ? clubs.map((club, index) => `
-      <div class="admin-simple-item">
-        ${
-          club.logo
-            ? `<div class="admin-thumb-box" style="background-image: url('${club.logo.replace(/'/g, "\\'")}');"></div>`
-            : `<div class="admin-thumb-box admin-thumb-placeholder">C</div>`
-        }
-        <div class="admin-simple-content">
-          <strong>${club.name || "-"}</strong>
-          <p>League: ${club.league || "Not assigned"}</p>
-          <p>${club.country || "-"} • ${club.area || "-"}</p>
-          <p>Founded: ${club.founded || "-"}</p>
-          <p>Kit Colours: ${club.kitColors || "-"}</p>
-        </div>
-        <button class="delete-btn" onclick="deleteClub(${index})">Delete</button>
-      </div>
-    `).join("")
-    : `<p class="empty-text">No clubs added yet.</p>`;
-}
-
-function renderLeaguesList() {
-  const container = document.getElementById("leaguesList");
-  if (!container) return;
-
-  const leagues = getStorage("twf_leagues");
-
-  container.innerHTML = leagues.length
-    ? leagues.map((league, index) => `
-      <div class="admin-simple-item">
-        ${
-          league.logo
-            ? `<div class="admin-thumb-box" style="background-image: url('${league.logo.replace(/'/g, "\\'")}');"></div>`
-            : `<div class="admin-thumb-box admin-thumb-placeholder">L</div>`
-        }
-        <div class="admin-simple-content">
-          <strong>${league.name || "-"}</strong>
-          <p>Level: ${league.level || "-"}</p>
-          <p>Founded: ${league.founded || "-"}</p>
-          <p>Country: ${league.country || "-"}</p>
-        </div>
-        <button class="delete-btn" onclick="deleteLeague(${index})">Delete</button>
-      </div>
-    `).join("")
-    : `<p class="empty-text">No leagues added yet.</p>`;
-}
-
-function deletePlayer(index) {
-  const players = getStorage("twf_players");
-  players.splice(index, 1);
-  setStorage("twf_players", players);
-  renderPlayersList();
-}
-
-function deleteClub(index) {
-  const clubs = getStorage("twf_clubs");
-  clubs.splice(index, 1);
-  setStorage("twf_clubs", clubs);
-  renderClubsList();
-  populateClubOptions();
-}
-
-function deleteLeague(index) {
-  const leagues = getStorage("twf_leagues");
-  leagues.splice(index, 1);
-  setStorage("twf_leagues", leagues);
-  renderLeaguesList();
-  populateLeagueOptions();
-}
-
-function clearPlayers() {
-  setStorage("twf_players", []);
-  renderPlayersList();
-}
-
-function clearClubs() {
-  setStorage("twf_clubs", []);
-  renderClubsList();
-  populateClubOptions();
-}
-
-function clearLeagues() {
-  setStorage("twf_leagues", []);
-  renderLeaguesList();
-  populateLeagueOptions();
-}
-
 function showAdminMessage(message, isError = false) {
   const box = document.getElementById("adminMessage");
   if (!box) return;
@@ -276,6 +147,52 @@ function setupAgeCalculation() {
   dobInput.addEventListener("change", function () {
     ageInput.value = calculateAge(dobInput.value);
   });
+}
+
+function deletePlayer(index) {
+  const players = getStorage("twf_players");
+  players.splice(index, 1);
+  setStorage("twf_players", players);
+  renderPlayersList();
+  renderPublicPlayers();
+}
+
+function deleteClub(index) {
+  const clubs = getStorage("twf_clubs");
+  clubs.splice(index, 1);
+  setStorage("twf_clubs", clubs);
+  renderClubsList();
+  populateClubOptions();
+  renderPublicClubs();
+}
+
+function deleteLeague(index) {
+  const leagues = getStorage("twf_leagues");
+  leagues.splice(index, 1);
+  setStorage("twf_leagues", leagues);
+  renderLeaguesList();
+  populateLeagueOptions();
+  renderPublicLeagues();
+}
+
+function clearPlayers() {
+  setStorage("twf_players", []);
+  renderPlayersList();
+  renderPublicPlayers();
+}
+
+function clearClubs() {
+  setStorage("twf_clubs", []);
+  renderClubsList();
+  populateClubOptions();
+  renderPublicClubs();
+}
+
+function clearLeagues() {
+  setStorage("twf_leagues", []);
+  renderLeaguesList();
+  populateLeagueOptions();
+  renderPublicLeagues();
 }
 
 function setupForms() {
@@ -323,6 +240,7 @@ function setupForms() {
         playerForm.reset();
         document.getElementById("playerAge").value = "";
         renderPlayersList();
+        renderPublicPlayers();
         showAdminMessage("Player added successfully.");
       } catch (error) {
         console.error("Player form error:", error);
@@ -367,6 +285,7 @@ function setupForms() {
         clubForm.reset();
         renderClubsList();
         populateClubOptions();
+        renderPublicClubs();
         showAdminMessage("Club added successfully.");
       } catch (error) {
         console.error("Club form error:", error);
@@ -407,6 +326,7 @@ function setupForms() {
         leagueForm.reset();
         renderLeaguesList();
         populateLeagueOptions();
+        renderPublicLeagues();
         showAdminMessage("League added successfully.");
       } catch (error) {
         console.error("League form error:", error);
@@ -415,6 +335,79 @@ function setupForms() {
     });
   }
 }
+
+/* ADMIN LISTS */
+
+function renderPlayersList() {
+  const container = document.getElementById("playersList");
+  if (!container) return;
+
+  const players = getStorage("twf_players");
+
+  container.innerHTML = players.length
+    ? players.map((player, index) => `
+      <div class="admin-simple-item">
+        <div class="admin-thumb-box admin-thumb-placeholder">P</div>
+        <div class="admin-simple-content">
+          <strong>${player.name || "-"}</strong>
+          <p>${player.position || "-"} • ${player.club || "-"} • No. ${player.shirtNumber || "-"}</p>
+          <p>DOB: ${player.dob || "-"} • Age: ${player.age || "-"}</p>
+          <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
+          <p>TWF Value: ${player.value || 0}</p>
+        </div>
+        <button class="delete-btn" onclick="deletePlayer(${index})">Delete</button>
+      </div>
+    `).join("")
+    : `<p class="empty-text">No players added yet.</p>`;
+}
+
+function renderClubsList() {
+  const container = document.getElementById("clubsList");
+  if (!container) return;
+
+  const clubs = getStorage("twf_clubs");
+
+  container.innerHTML = clubs.length
+    ? clubs.map((club, index) => `
+      <div class="admin-simple-item">
+        <div class="admin-thumb-box admin-thumb-placeholder">C</div>
+        <div class="admin-simple-content">
+          <strong>${club.name || "-"}</strong>
+          <p>League: ${club.league || "Not assigned"}</p>
+          <p>${club.country || "-"} • ${club.area || "-"}</p>
+          <p>Founded: ${club.founded || "-"}</p>
+          <p>Kit Colours: ${club.kitColors || "-"}</p>
+        </div>
+        <button class="delete-btn" onclick="deleteClub(${index})">Delete</button>
+      </div>
+    `).join("")
+    : `<p class="empty-text">No clubs added yet.</p>`;
+}
+
+function renderLeaguesList() {
+  const container = document.getElementById("leaguesList");
+  if (!container) return;
+
+  const leagues = getStorage("twf_leagues");
+
+  container.innerHTML = leagues.length
+    ? leagues.map((league, index) => `
+      <div class="admin-simple-item">
+        <div class="admin-thumb-box admin-thumb-placeholder">L</div>
+        <div class="admin-simple-content">
+          <strong>${league.name || "-"}</strong>
+          <p>Level: ${league.level || "-"}</p>
+          <p>Founded: ${league.founded || "-"}</p>
+          <p>Country: ${league.country || "-"}</p>
+        </div>
+        <button class="delete-btn" onclick="deleteLeague(${index})">Delete</button>
+      </div>
+    `).join("")
+    : `<p class="empty-text">No leagues added yet.</p>`;
+}
+
+/* PUBLIC CARDS */
+
 function getImageBackground(image) {
   return image ? `style="background-image: url('${image.replace(/'/g, "\\'")}');"` : "";
 }
@@ -424,28 +417,25 @@ function renderPublicPlayers() {
   const homeGrid = document.getElementById("homePlayersGrid");
   const players = getStorage("twf_players");
 
-  const html = players.length
+  const fullHtml = players.length
     ? players.map((player) => `
       <article class="data-card">
         <div class="data-card-media" ${getImageBackground(player.image)}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${player.name || "-"}</h3>
           <p class="data-card-subtitle">${player.position || "-"} • ${player.club || "-"}</p>
-
           <div class="data-card-stats">
             <p>Age: ${player.age || "-"}</p>
             <p>No. ${player.shirtNumber || "-"}</p>
             <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
           </div>
-
           <span class="data-card-value">TWF Value: ${player.value || 0}</span>
         </div>
       </article>
     `).join("")
     : `<div class="data-card-empty">No players added yet.</div>`;
 
-  if (grid) grid.innerHTML = html;
-  if (homeGrid) homeGrid.innerHTML = players.slice(0, 3).length
+  const homeHtml = players.length
     ? players.slice(0, 3).map((player) => `
       <article class="data-card">
         <div class="data-card-media" ${getImageBackground(player.image)}></div>
@@ -461,6 +451,9 @@ function renderPublicPlayers() {
       </article>
     `).join("")
     : `<div class="data-card-empty">No players added yet.</div>`;
+
+  if (grid) grid.innerHTML = fullHtml;
+  if (homeGrid) homeGrid.innerHTML = homeHtml;
 }
 
 function renderPublicClubs() {
@@ -468,14 +461,13 @@ function renderPublicClubs() {
   const homeGrid = document.getElementById("homeClubsGrid");
   const clubs = getStorage("twf_clubs");
 
-  const html = clubs.length
+  const fullHtml = clubs.length
     ? clubs.map((club) => `
       <article class="data-card">
         <div class="data-card-media logo" ${getImageBackground(club.logo)}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${club.name || "-"}</h3>
           <p class="data-card-subtitle">${club.country || "-"} • ${club.area || "-"}</p>
-
           <div class="data-card-stats">
             <p>League: ${club.league || "Not assigned"}</p>
             <p>Founded: ${club.founded || "-"}</p>
@@ -486,8 +478,7 @@ function renderPublicClubs() {
     `).join("")
     : `<div class="data-card-empty">No clubs added yet.</div>`;
 
-  if (grid) grid.innerHTML = html;
-  if (homeGrid) homeGrid.innerHTML = clubs.slice(0, 3).length
+  const homeHtml = clubs.length
     ? clubs.slice(0, 3).map((club) => `
       <article class="data-card">
         <div class="data-card-media logo" ${getImageBackground(club.logo)}></div>
@@ -502,6 +493,9 @@ function renderPublicClubs() {
       </article>
     `).join("")
     : `<div class="data-card-empty">No clubs added yet.</div>`;
+
+  if (grid) grid.innerHTML = fullHtml;
+  if (homeGrid) homeGrid.innerHTML = homeHtml;
 }
 
 function renderPublicLeagues() {
@@ -509,14 +503,13 @@ function renderPublicLeagues() {
   const homeGrid = document.getElementById("homeLeaguesGrid");
   const leagues = getStorage("twf_leagues");
 
-  const html = leagues.length
+  const fullHtml = leagues.length
     ? leagues.map((league) => `
       <article class="data-card">
         <div class="data-card-media logo" ${getImageBackground(league.logo)}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${league.name || "-"}</h3>
           <p class="data-card-subtitle">${league.country || "-"}</p>
-
           <div class="data-card-stats">
             <p>Level: ${league.level || "-"}</p>
             <p>Founded: ${league.founded || "-"}</p>
@@ -526,8 +519,7 @@ function renderPublicLeagues() {
     `).join("")
     : `<div class="data-card-empty">No leagues added yet.</div>`;
 
-  if (grid) grid.innerHTML = html;
-  if (homeGrid) homeGrid.innerHTML = leagues.slice(0, 3).length
+  const homeHtml = leagues.length
     ? leagues.slice(0, 3).map((league) => `
       <article class="data-card">
         <div class="data-card-media logo" ${getImageBackground(league.logo)}></div>
@@ -542,7 +534,11 @@ function renderPublicLeagues() {
       </article>
     `).join("")
     : `<div class="data-card-empty">No leagues added yet.</div>`;
+
+  if (grid) grid.innerHTML = fullHtml;
+  if (homeGrid) homeGrid.innerHTML = homeHtml;
 }
+
 document.addEventListener("DOMContentLoaded", function () {
   try {
     createSeedData();
