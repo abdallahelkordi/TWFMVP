@@ -419,9 +419,9 @@ function renderPublicPlayers() {
   const players = getStorage("twf_players");
 
   const fullHtml = players.length
-    ? players.map((player) => `
+    ? players.map((player, index) => `
       <article class="data-card" onclick="openPlayer(${index})" style="cursor:pointer;">
-        <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image.replace(/'/g, "\\'")}');"` : ""}></div>
+        <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${player.name || "-"}</h3>
           <p class="data-card-subtitle">${player.position || "-"} • ${player.club || "-"}</p>
@@ -437,9 +437,9 @@ function renderPublicPlayers() {
     : `<div class="data-card-empty">No players added yet.</div>`;
 
   const homeHtml = players.length
-    ? players.slice(0, 3).map((player) => `
+    ? players.slice(0, 3).map((player, index) => `
       <article class="data-card" onclick="openPlayer(${index})" style="cursor:pointer;">
-        <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image.replace(/'/g, "\\'")}');"` : ""}></div>
+        <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${player.name || "-"}</h3>
           <p class="data-card-subtitle">${player.position || "-"} • ${player.club || "-"}</p>
@@ -599,6 +599,13 @@ function renderPlayerProfile() {
     </div>
   `;
 }
+function openPlayer(index) {
+  const players = getStorage("twf_players");
+  const player = players[index];
+
+  localStorage.setItem("twf_selected_player", JSON.stringify(player));
+  window.location.href = "player.html";
+}
 document.addEventListener("DOMContentLoaded", function () {
   try {
     createSeedData();
@@ -614,6 +621,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderPublicPlayers();
     renderPublicClubs();
     renderPublicLeagues();
+    
     renderPlayerProfile();
 
     console.log("TWF loaded successfully");
