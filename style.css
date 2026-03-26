@@ -651,3 +651,75 @@ img {
     grid-template-columns: 1fr;
   }
 }
+.player-profile {
+  display: grid;
+  gap: 24px;
+}
+
+.player-profile-header {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.player-profile-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 18px;
+  background-size: cover;
+  background-position: center;
+  background-color: #0d1728;
+  border: 1px solid var(--line);
+}
+
+.player-profile-main h1 {
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+
+.player-profile-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  color: var(--muted);
+}
+
+.player-profile-value {
+  margin-top: 14px;
+  font-weight: 700;
+  background: rgba(159, 232, 112, 0.1);
+  padding: 8px 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.player-profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-box {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 18px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.stat-box p {
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.stat-box strong {
+  font-size: 1.4rem;
+}
+
+.player-profile-info {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 20px;
+  border-radius: 14px;
+}
