@@ -893,3 +893,25 @@ a {
   gap: 12px;
   align-items: flex-start;
 }
+.admin-message {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  display: none;
+}
+
+.admin-message.success,
+.admin-message.error {
+  display: block;
+}
+
+.admin-message.success {
+  background: rgba(159, 232, 112, 0.08);
+  color: var(--text);
+}
+
+.admin-message.error {
+  background: rgba(255, 80, 80, 0.08);
+  color: var(--text);
+}
