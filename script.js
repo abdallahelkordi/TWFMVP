@@ -2,6 +2,53 @@ const SUPABASE_URL = "https://ngstbcdrdmpqoklhiqqz.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_-T2dxQghz-ijyABdXi2a2w_mLB6YBK5";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+async function fetchLeaguesFromSupabase() {
+  const { data, error } = await supabaseClient
+    .from("leagues")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchClubsFromSupabase() {
+  const { data, error } = await supabaseClient
+    .from("clubs")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data || [];
+}
+
+async function fetchPlayersFromSupabase() {
+  const { data, error } = await supabaseClient
+    .from("players")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data || [];
+}
+
+async function uploadImageToSupabase(bucket, file) {
+  if (!file) return "";
+
+  const filePath = `${Date.now()}-${file.name}`;
+
+  const { error } = await supabaseClient.storage
+    .from(bucket)
+    .upload(filePath, file);
+
+  if (error) throw error;
+
+  const { data } = supabaseClient.storage
+    .from(bucket)
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+}
 function getStorage(key) {
   try {
     const raw = localStorage.getItem(key);
