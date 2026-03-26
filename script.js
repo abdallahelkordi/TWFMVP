@@ -1,3 +1,7 @@
+const SUPABASE_URL = "https://ngstbcdrdmpqoklhiqqz.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_-T2dxQghz-ijyABdXi2a2w_mLB6YBK5";
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 function getStorage(key) {
   try {
     const raw = localStorage.getItem(key);
