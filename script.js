@@ -452,7 +452,7 @@ function renderPublicClubs() {
   const homeGrid = document.getElementById("homeClubsGrid");
   const clubs = getStorage("twf_clubs");
 
-  const card = (club) => `
+  const card = (club, index) => `
     <article class="data-card" onclick="openClub(${index})" style="cursor:pointer;">
       <div class="data-card-media logo" ${club.logo ? `style='background-image:url("${club.logo}")'` : ""}></div>
       <div class="data-card-body">
@@ -469,13 +469,13 @@ function renderPublicClubs() {
 
   if (grid) {
     grid.innerHTML = clubs.length
-      ? clubs.map((club) => card(club)).join("")
+      ? clubs.map((club, index) => card(club, index)).join("")
       : `<div class="data-card-empty">No clubs added yet.</div>`;
   }
 
   if (homeGrid) {
     homeGrid.innerHTML = clubs.length
-      ? clubs.slice(0, 3).map((club) => card(club)).join("")
+      ? clubs.slice(0, 3).map((club, index) => card(club, index)).join("")
       : `<div class="data-card-empty">No clubs added yet.</div>`;
   }
 }
@@ -625,6 +625,13 @@ function renderClubProfile() {
 
     </div>
   `;
+}
+function openClub(index) {
+  const clubs = getStorage("twf_clubs");
+  const club = clubs[index];
+
+  localStorage.setItem("twf_selected_club", JSON.stringify(club));
+  window.location.href = "club.html";
 }
 document.addEventListener("DOMContentLoaded", function () {
   try {
