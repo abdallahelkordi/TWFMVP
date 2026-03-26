@@ -420,7 +420,7 @@ function renderPublicPlayers() {
   const fullHtml = players.length
     ? players.map((player) => `
       <article class="data-card">
-        <div class="data-card-media" ${getImageBackground(player.image)}></div>
+        <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${player.name || "-"}</h3>
           <p class="data-card-subtitle">${player.position || "-"} • ${player.club || "-"}</p>
@@ -438,7 +438,7 @@ function renderPublicPlayers() {
   const homeHtml = players.length
     ? players.slice(0, 3).map((player) => `
       <article class="data-card">
-        <div class="data-card-media" ${getImageBackground(player.image)}></div>
+        <div class="data-card-media"${player.image ? ` style="background-image: url('${player.image.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${player.name || "-"}</h3>
           <p class="data-card-subtitle">${player.position || "-"} • ${player.club || "-"}</p>
@@ -464,7 +464,7 @@ function renderPublicClubs() {
   const fullHtml = clubs.length
     ? clubs.map((club) => `
       <article class="data-card">
-        <div class="data-card-media logo" ${getImageBackground(club.logo)}></div>
+        <div class="data-card-media logo"${club.logo ? ` style="background-image: url('${club.logo.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${club.name || "-"}</h3>
           <p class="data-card-subtitle">${club.country || "-"} • ${club.area || "-"}</p>
@@ -481,7 +481,7 @@ function renderPublicClubs() {
   const homeHtml = clubs.length
     ? clubs.slice(0, 3).map((club) => `
       <article class="data-card">
-        <div class="data-card-media logo" ${getImageBackground(club.logo)}></div>
+        <div class="data-card-media logo"${club.logo ? ` style="background-image: url('${club.logo.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${club.name || "-"}</h3>
           <p class="data-card-subtitle">${club.country || "-"} • ${club.area || "-"}</p>
@@ -506,7 +506,7 @@ function renderPublicLeagues() {
   const fullHtml = leagues.length
     ? leagues.map((league) => `
       <article class="data-card">
-        <div class="data-card-media logo" ${getImageBackground(league.logo)}></div>
+        <div class="data-card-media logo"${league.logo ? ` style="background-image: url('${league.logo.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${league.name || "-"}</h3>
           <p class="data-card-subtitle">${league.country || "-"}</p>
@@ -522,7 +522,7 @@ function renderPublicLeagues() {
   const homeHtml = leagues.length
     ? leagues.slice(0, 3).map((league) => `
       <article class="data-card">
-        <div class="data-card-media logo" ${getImageBackground(league.logo)}></div>
+        <div class="data-card-media logo"${league.logo ? ` style="background-image: url('${league.logo.replace(/'/g, "\\'")}');"` : ""}></div>
         <div class="data-card-body">
           <h3 class="data-card-title">${league.name || "-"}</h3>
           <p class="data-card-subtitle">${league.country || "-"}</p>
@@ -538,7 +538,6 @@ function renderPublicLeagues() {
   if (grid) grid.innerHTML = fullHtml;
   if (homeGrid) homeGrid.innerHTML = homeHtml;
 }
-
 document.addEventListener("DOMContentLoaded", function () {
   try {
     createSeedData();
