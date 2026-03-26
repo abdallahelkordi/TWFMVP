@@ -47,12 +47,35 @@
           <h2>Add Player</h2>
           <form id="playerForm" class="admin-form">
             <input type="text" id="playerName" placeholder="Player name" required>
-            <input type="number" id="playerAge" placeholder="Age" required>
-            <input type="text" id="playerPosition" placeholder="Position" required>
-            <input type="text" id="playerCountry" placeholder="Country" required>
-            <input type="text" id="playerClub" placeholder="Club" required>
-            <input type="text" id="playerStatus" placeholder="Status / Trend" required>
-            <textarea id="playerDescription" placeholder="Short player description" required></textarea>
+
+            <label class="admin-label" for="playerDob">Date of birth</label>
+            <input type="date" id="playerDob" required>
+
+            <input type="number" id="playerAge" placeholder="Age" readonly>
+
+            <label class="admin-label" for="playerClub">Club</label>
+            <select id="playerClub" required>
+              <option value="">Select a club</option>
+            </select>
+
+            <label class="admin-label" for="playerPosition">Position</label>
+            <select id="playerPosition" required>
+              <option value="">Select position</option>
+              <option value="Goalkeeper">Goalkeeper</option>
+              <option value="Defender">Defender</option>
+              <option value="Midfielder">Midfielder</option>
+              <option value="Forward">Forward</option>
+            </select>
+
+            <input type="number" id="playerNumber" placeholder="T-shirt number" required>
+            <input type="number" id="playerAppearances" placeholder="This season appearances" required>
+            <input type="number" id="playerGoals" placeholder="This season goals" required>
+            <input type="number" id="playerAssists" placeholder="This season assists" required>
+            <input type="number" id="playerValue" placeholder="TWF Value" required>
+
+            <label class="admin-label" for="playerImage">Profile picture</label>
+            <input type="file" id="playerImage" accept="image/*">
+
             <button type="submit" class="btn btn-primary admin-btn">Add Player</button>
           </form>
         </article>
@@ -62,10 +85,20 @@
           <h2>Add Club</h2>
           <form id="clubForm" class="admin-form">
             <input type="text" id="clubName" placeholder="Club name" required>
+
+            <label class="admin-label" for="clubLogo">Club logo</label>
+            <input type="file" id="clubLogo" accept="image/*">
+
+            <label class="admin-label" for="clubLeague">League</label>
+            <select id="clubLeague">
+              <option value="">No league selected</option>
+            </select>
+
             <input type="text" id="clubCountry" placeholder="Country" required>
-            <input type="text" id="clubLevel" placeholder="Level" required>
-            <input type="text" id="clubFocus" placeholder="Focus / Identity" required>
-            <textarea id="clubDescription" placeholder="Short club description" required></textarea>
+            <input type="text" id="clubArea" placeholder="Area / City" required>
+            <input type="number" id="clubFounded" placeholder="Year of foundation" required>
+            <input type="text" id="clubKitColors" placeholder="Main kit colours" required>
+
             <button type="submit" class="btn btn-primary admin-btn">Add Club</button>
           </form>
         </article>
@@ -75,9 +108,14 @@
           <h2>Add League</h2>
           <form id="leagueForm" class="admin-form">
             <input type="text" id="leagueName" placeholder="League name" required>
-            <input type="text" id="leagueRegion" placeholder="Region / Country" required>
-            <input type="text" id="leagueLevel" placeholder="League level / scope" required>
-            <textarea id="leagueDescription" placeholder="Short league description" required></textarea>
+
+            <label class="admin-label" for="leagueLogo">League logo</label>
+            <input type="file" id="leagueLogo" accept="image/*">
+
+            <input type="text" id="leagueLevel" placeholder="Level" required>
+            <input type="number" id="leagueFounded" placeholder="Year of foundation" required>
+            <input type="text" id="leagueCountry" placeholder="Country" required>
+
             <button type="submit" class="btn btn-primary admin-btn">Add League</button>
           </form>
         </article>
