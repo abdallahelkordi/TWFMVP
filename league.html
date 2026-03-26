@@ -14,15 +14,18 @@
     <div class="container nav">
       <a href="index.html" class="logo">
         <span class="logo-badge">TWF</span>
-        <span class="logo-text">The Women's Football</span>
+        <span class="logo-text-wrap">
+          <span class="logo-text">The Women's Football</span>
+          <span class="logo-subtext">Leagues database</span>
+        </span>
       </a>
 
       <nav class="nav-links">
+        <a href="index.html">Home</a>
         <a href="players.html">Players</a>
         <a href="clubs.html">Clubs</a>
         <a href="league.html">Leagues</a>
-        <a href="index.html#vision">Vision</a>
-        <a href="index.html#future">Roadmap</a>
+        <a href="admin.html">Admin</a>
       </nav>
     </div>
   </header>
@@ -33,48 +36,14 @@
         <p class="section-tag">League visibility</p>
         <h1 class="page-title">Leagues</h1>
         <p class="page-subtitle">
-          League hubs that organize clubs, players, competition context, and storytelling in one place.
+          League hubs that organize clubs, context, and ecosystem growth.
         </p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="cards-grid">
-          <article class="info-card">
-            <h3>Egypt Women’s Premier League</h3>
-            <p>
-              The first major focus market for TWF, serving as the foundation of the MVP and data structure.
-            </p>
-          </article>
-
-          <article class="info-card">
-            <h3>Middle East Expansion</h3>
-            <p>
-              Future regional growth can connect leagues, clubs, and talent into one visible football ecosystem.
-            </p>
-          </article>
-
-          <article class="info-card">
-            <h3>Global Potential</h3>
-            <p>
-              Long-term ambition is to create the trusted home of women’s football worldwide.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section dark-section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="section-tag">League-first strategy</p>
-          <h2>Start local. Build regional. Scale global.</h2>
-          <p>
-            TWF begins with the Egyptian women’s football market, then expands into the
-            Middle East, then into a global women’s football platform with trusted structure and value.
-          </p>
-        </div>
+        <div id="leaguesGrid" class="league-cards-grid"></div>
       </div>
     </section>
   </main>
@@ -85,5 +54,7 @@
       <p>League structure drives ecosystem growth.</p>
     </div>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
