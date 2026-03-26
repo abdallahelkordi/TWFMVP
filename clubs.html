@@ -14,15 +14,18 @@
     <div class="container nav">
       <a href="index.html" class="logo">
         <span class="logo-badge">TWF</span>
-        <span class="logo-text">The Women's Football</span>
+        <span class="logo-text-wrap">
+          <span class="logo-text">The Women's Football</span>
+          <span class="logo-subtext">Clubs database</span>
+        </span>
       </a>
 
       <nav class="nav-links">
+        <a href="index.html">Home</a>
         <a href="players.html">Players</a>
         <a href="clubs.html">Clubs</a>
         <a href="league.html">Leagues</a>
-        <a href="index.html#vision">Vision</a>
-        <a href="index.html#future">Roadmap</a>
+        <a href="admin.html">Admin</a>
       </nav>
     </div>
   </header>
@@ -33,56 +36,14 @@
         <p class="section-tag">Club ecosystem</p>
         <h1 class="page-title">Clubs</h1>
         <p class="page-subtitle">
-          Club profiles designed to improve visibility, context, credibility, and long-term commercial value.
+          Club profiles designed for visibility, identity, and future market presence.
         </p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="list-grid">
-          <article class="profile-card">
-            <div class="profile-top">
-              <div class="avatar-circle">FC</div>
-              <div>
-                <h3><a href="club.html">FC Cairo Women</a></h3>
-                <p>Egypt • Premier Level</p>
-              </div>
-            </div>
-            <p class="profile-text">
-              An ambitious club focused on competitive growth, youth development, and visibility.
-            </p>
-            <a class="text-link" href="club.html">Open club profile</a>
-          </article>
-
-          <article class="profile-card">
-            <div class="profile-top">
-              <div class="avatar-circle">AS</div>
-              <div>
-                <h3><a href="club.html">Alexandria SC</a></h3>
-                <p>Egypt • Competitive Level</p>
-              </div>
-            </div>
-            <p class="profile-text">
-              A structured football environment with a strong identity and growing talent base.
-            </p>
-            <a class="text-link" href="club.html">Open club profile</a>
-          </article>
-
-          <article class="profile-card">
-            <div class="profile-top">
-              <div class="avatar-circle">DS</div>
-              <div>
-                <h3><a href="club.html">Delta Stars</a></h3>
-                <p>Egypt • Development Focus</p>
-              </div>
-            </div>
-            <p class="profile-text">
-              A promising project with emphasis on player development and future competitiveness.
-            </p>
-            <a class="text-link" href="club.html">Open club profile</a>
-          </article>
-        </div>
+        <div id="clubsGrid" class="club-cards-grid"></div>
       </div>
     </section>
   </main>
@@ -93,5 +54,7 @@
       <p>Club visibility with structure.</p>
     </div>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
