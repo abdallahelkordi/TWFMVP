@@ -147,17 +147,14 @@ function renderPlayersList() {
 
   container.innerHTML = players.length
     ? players.map((player, index) => `
-      <div class="admin-item">
-        <div class="admin-item-main">
-          ${player.image ? `<img src="${player.image}" alt="${player.name}" class="admin-thumb" />` : ""}
-          <div>
-            <strong>${player.name || "-"}</strong>
-            <p>DOB: ${player.dob || "-"} • Age: ${player.age || "-"}</p>
-            <p>Club: ${player.club || "-"}</p>
-            <p>Position: ${player.position || "-"} • No. ${player.shirtNumber || "-"}</p>
-            <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
-            <p>TWF Value: ${player.value || 0}</p>
-          </div>
+      <div class="admin-simple-item">
+        ${player.image ? `<img src="${player.image}" alt="${player.name}" class="admin-thumb" />` : `<div class="admin-thumb admin-thumb-placeholder">P</div>`}
+        <div class="admin-simple-content">
+          <strong>${player.name || "-"}</strong>
+          <p>${player.position || "-"} • ${player.club || "-"} • No. ${player.shirtNumber || "-"}</p>
+          <p>DOB: ${player.dob || "-"} • Age: ${player.age || "-"}</p>
+          <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
+          <p>TWF Value: ${player.value || 0}</p>
         </div>
         <button class="delete-btn" onclick="deletePlayer(${index})">Delete</button>
       </div>
@@ -173,16 +170,14 @@ function renderClubsList() {
 
   container.innerHTML = clubs.length
     ? clubs.map((club, index) => `
-      <div class="admin-item">
-        <div class="admin-item-main">
-          ${club.logo ? `<img src="${club.logo}" alt="${club.name}" class="admin-thumb">` : ""}
-          <div>
-            <strong>${club.name || "-"}</strong>
-            <p>League: ${club.league || "Not assigned"}</p>
-            <p>${club.country || "-"} • ${club.area || "-"}</p>
-            <p>Founded: ${club.founded || "-"}</p>
-            <p>Kit Colours: ${club.kitColors || "-"}</p>
-          </div>
+      <div class="admin-simple-item">
+        ${club.logo ? `<img src="${club.logo}" alt="${club.name}" class="admin-thumb" />` : `<div class="admin-thumb admin-thumb-placeholder">C</div>`}
+        <div class="admin-simple-content">
+          <strong>${club.name || "-"}</strong>
+          <p>League: ${club.league || "Not assigned"}</p>
+          <p>${club.country || "-"} • ${club.area || "-"}</p>
+          <p>Founded: ${club.founded || "-"}</p>
+          <p>Kit Colours: ${club.kitColors || "-"}</p>
         </div>
         <button class="delete-btn" onclick="deleteClub(${index})">Delete</button>
       </div>
@@ -198,15 +193,13 @@ function renderLeaguesList() {
 
   container.innerHTML = leagues.length
     ? leagues.map((league, index) => `
-      <div class="admin-item">
-        <div class="admin-item-main">
-          ${league.logo ? `<img src="${league.logo}" alt="${league.name}" class="admin-thumb">` : ""}
-          <div>
-            <strong>${league.name || "-"}</strong>
-            <p>Level: ${league.level || "-"}</p>
-            <p>Founded: ${league.founded || "-"}</p>
-            <p>Country: ${league.country || "-"}</p>
-          </div>
+      <div class="admin-simple-item">
+        ${league.logo ? `<img src="${league.logo}" alt="${league.name}" class="admin-thumb" />` : `<div class="admin-thumb admin-thumb-placeholder">L</div>`}
+        <div class="admin-simple-content">
+          <strong>${league.name || "-"}</strong>
+          <p>Level: ${league.level || "-"}</p>
+          <p>Founded: ${league.founded || "-"}</p>
+          <p>Country: ${league.country || "-"}</p>
         </div>
         <button class="delete-btn" onclick="deleteLeague(${index})">Delete</button>
       </div>
