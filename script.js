@@ -453,7 +453,7 @@ function renderPublicClubs() {
   const clubs = getStorage("twf_clubs");
 
   const card = (club) => `
-    <article class="data-card">
+    <article class="data-card" onclick="openClub(${index})" style="cursor:pointer;">
       <div class="data-card-media logo" ${club.logo ? `style='background-image:url("${club.logo}")'` : ""}></div>
       <div class="data-card-body">
         <h3 class="data-card-title">${club.name || "-"}</h3>
@@ -578,6 +578,54 @@ function openPlayer(index) {
   localStorage.setItem("twf_selected_player", JSON.stringify(player));
   window.location.href = "player.html";
 }
+function openClub(index) {
+  const clubs = getStorage("twf_clubs");
+  const club = clubs[index];
+
+  localStorage.setItem("twf_selected_club", JSON.stringify(club));
+
+  window.location.href = "club.html";
+}
+function renderClubProfile() {
+  const container = document.getElementById("clubProfile");
+  if (!container) return;
+
+  const club = JSON.parse(localStorage.getItem("twf_selected_club"));
+
+  if (!club) {
+    container.innerHTML = `<p class="data-card-empty">Club not found.</p>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="player-profile">
+
+      <div class="player-profile-header">
+        <div class="player-profile-image"
+          style="${club.logo ? `background-image:url('${club.logo}')` : ''}">
+        </div>
+
+        <div class="player-profile-main">
+          <h1>${club.name}</h1>
+          <p>${club.country} • ${club.area}</p>
+
+          <div class="player-profile-meta">
+            <span>Founded: ${club.founded}</span>
+            <span>${club.league || "No league"}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="player-profile-info">
+        <p><strong>Country:</strong> ${club.country}</p>
+        <p><strong>Area:</strong> ${club.area}</p>
+        <p><strong>League:</strong> ${club.league || "Not assigned"}</p>
+        <p><strong>Kit Colours:</strong> ${club.kitColors}</p>
+      </div>
+
+    </div>
+  `;
+}
 document.addEventListener("DOMContentLoaded", function () {
   try {
     createSeedData();
@@ -595,6 +643,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderPublicLeagues();
     
     renderPlayerProfile();
+    renderClubProfile();
 
     console.log("TWF loaded successfully");
   } catch (error) {
