@@ -409,7 +409,8 @@ function renderLeaguesList() {
 /* PUBLIC CARDS */
 
 function getImageBackground(image) {
-  return image ? `style="background-image: url('${image.replace(/'/g, "\\'")}');"` : "";
+  if (!image) return "";
+  return `style='background-image: url("${image}");'`;
 }
 
 function renderPublicPlayers() {
