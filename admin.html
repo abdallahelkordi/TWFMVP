@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TWF | Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="logo">
+        <span class="logo-badge">TWF</span>
+        <span class="logo-text-wrap">
+          <span class="logo-text">The Women's Football</span>
+          <span class="logo-subtext">MVP admin panel</span>
+        </span>
+      </a>
 
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="players.html">Players</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="league.html">Leagues</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="section-tag">Admin panel</p>
+        <h1 class="page-title">Add platform data</h1>
+        <p class="page-subtitle">
+          Use this MVP admin panel to add players, clubs, and leagues directly in your browser.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container admin-grid">
+        <article class="detail-card">
+          <p class="section-tag">Players</p>
+          <h2>Add Player</h2>
+          <form id="playerForm" class="admin-form">
+            <input type="text" id="playerName" placeholder="Player name" required>
+            <input type="number" id="playerAge" placeholder="Age" required>
+            <input type="text" id="playerPosition" placeholder="Position" required>
+            <input type="text" id="playerCountry" placeholder="Country" required>
+            <input type="text" id="playerClub" placeholder="Club" required>
+            <input type="text" id="playerStatus" placeholder="Status / Trend" required>
+            <textarea id="playerDescription" placeholder="Short player description" required></textarea>
+            <button type="submit" class="btn btn-primary admin-btn">Add Player</button>
+          </form>
+        </article>
+
+        <article class="detail-card">
+          <p class="section-tag">Clubs</p>
+          <h2>Add Club</h2>
+          <form id="clubForm" class="admin-form">
+            <input type="text" id="clubName" placeholder="Club name" required>
+            <input type="text" id="clubCountry" placeholder="Country" required>
+            <input type="text" id="clubLevel" placeholder="Level" required>
+            <input type="text" id="clubFocus" placeholder="Focus / Identity" required>
+            <textarea id="clubDescription" placeholder="Short club description" required></textarea>
+            <button type="submit" class="btn btn-primary admin-btn">Add Club</button>
+          </form>
+        </article>
+
+        <article class="detail-card">
+          <p class="section-tag">Leagues</p>
+          <h2>Add League</h2>
+          <form id="leagueForm" class="admin-form">
+            <input type="text" id="leagueName" placeholder="League name" required>
+            <input type="text" id="leagueRegion" placeholder="Region / Country" required>
+            <input type="text" id="leagueLevel" placeholder="League level / scope" required>
+            <textarea id="leagueDescription" placeholder="Short league description" required></textarea>
+            <button type="submit" class="btn btn-primary admin-btn">Add League</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-tag">Saved data</p>
+          <h2>Current MVP entries</h2>
+          <p>Your added data is stored in the browser for now.</p>
+        </div>
+
+        <div class="admin-output-grid">
+          <article class="detail-card">
+            <div class="admin-list-header">
+              <h3>Players</h3>
+              <button class="btn btn-secondary small-btn" onclick="clearPlayers()">Clear</button>
+            </div>
+            <div id="playersList" class="admin-list"></div>
+          </article>
+
+          <article class="detail-card">
+            <div class="admin-list-header">
+              <h3>Clubs</h3>
+              <button class="btn btn-secondary small-btn" onclick="clearClubs()">Clear</button>
+            </div>
+            <div id="clubsList" class="admin-list"></div>
+          </article>
+
+          <article class="detail-card">
+            <div class="admin-list-header">
+              <h3>Leagues</h3>
+              <button class="btn btn-secondary small-btn" onclick="clearLeagues()">Clear</button>
+            </div>
+            <div id="leaguesList" class="admin-list"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <p>© 2026 TWF — The Women's Football</p>
+      <p>MVP browser-based admin panel.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
