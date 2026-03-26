@@ -415,7 +415,134 @@ function setupForms() {
     });
   }
 }
+function getImageBackground(image) {
+  return image ? `style="background-image: url('${image.replace(/'/g, "\\'")}');"` : "";
+}
 
+function renderPublicPlayers() {
+  const grid = document.getElementById("playersGrid");
+  const homeGrid = document.getElementById("homePlayersGrid");
+  const players = getStorage("twf_players");
+
+  const html = players.length
+    ? players.map((player) => `
+      <article class="data-card">
+        <div class="data-card-media" ${getImageBackground(player.image)}></div>
+        <div class="data-card-body">
+          <h3 class="data-card-title">${player.name || "-"}</h3>
+          <p class="data-card-subtitle">${player.position || "-"} • ${player.club || "-"}</p>
+
+          <div class="data-card-stats">
+            <p>Age: ${player.age || "-"}</p>
+            <p>No. ${player.shirtNumber || "-"}</p>
+            <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
+          </div>
+
+          <span class="data-card-value">TWF Value: ${player.value || 0}</span>
+        </div>
+      </article>
+    `).join("")
+    : `<div class="data-card-empty">No players added yet.</div>`;
+
+  if (grid) grid.innerHTML = html;
+  if (homeGrid) homeGrid.innerHTML = players.slice(0, 3).length
+    ? players.slice(0, 3).map((player) => `
+      <article class="data-card">
+        <div class="data-card-media" ${getImageBackground(player.image)}></div>
+        <div class="data-card-body">
+          <h3 class="data-card-title">${player.name || "-"}</h3>
+          <p class="data-card-subtitle">${player.position || "-"} • ${player.club || "-"}</p>
+          <div class="data-card-stats">
+            <p>Age: ${player.age || "-"}</p>
+            <p>Apps: ${player.appearances || 0} • Goals: ${player.goals || 0} • Assists: ${player.assists || 0}</p>
+          </div>
+          <span class="data-card-value">TWF Value: ${player.value || 0}</span>
+        </div>
+      </article>
+    `).join("")
+    : `<div class="data-card-empty">No players added yet.</div>`;
+}
+
+function renderPublicClubs() {
+  const grid = document.getElementById("clubsGrid");
+  const homeGrid = document.getElementById("homeClubsGrid");
+  const clubs = getStorage("twf_clubs");
+
+  const html = clubs.length
+    ? clubs.map((club) => `
+      <article class="data-card">
+        <div class="data-card-media logo" ${getImageBackground(club.logo)}></div>
+        <div class="data-card-body">
+          <h3 class="data-card-title">${club.name || "-"}</h3>
+          <p class="data-card-subtitle">${club.country || "-"} • ${club.area || "-"}</p>
+
+          <div class="data-card-stats">
+            <p>League: ${club.league || "Not assigned"}</p>
+            <p>Founded: ${club.founded || "-"}</p>
+            <p>Kit Colours: ${club.kitColors || "-"}</p>
+          </div>
+        </div>
+      </article>
+    `).join("")
+    : `<div class="data-card-empty">No clubs added yet.</div>`;
+
+  if (grid) grid.innerHTML = html;
+  if (homeGrid) homeGrid.innerHTML = clubs.slice(0, 3).length
+    ? clubs.slice(0, 3).map((club) => `
+      <article class="data-card">
+        <div class="data-card-media logo" ${getImageBackground(club.logo)}></div>
+        <div class="data-card-body">
+          <h3 class="data-card-title">${club.name || "-"}</h3>
+          <p class="data-card-subtitle">${club.country || "-"} • ${club.area || "-"}</p>
+          <div class="data-card-stats">
+            <p>League: ${club.league || "Not assigned"}</p>
+            <p>Founded: ${club.founded || "-"}</p>
+          </div>
+        </div>
+      </article>
+    `).join("")
+    : `<div class="data-card-empty">No clubs added yet.</div>`;
+}
+
+function renderPublicLeagues() {
+  const grid = document.getElementById("leaguesGrid");
+  const homeGrid = document.getElementById("homeLeaguesGrid");
+  const leagues = getStorage("twf_leagues");
+
+  const html = leagues.length
+    ? leagues.map((league) => `
+      <article class="data-card">
+        <div class="data-card-media logo" ${getImageBackground(league.logo)}></div>
+        <div class="data-card-body">
+          <h3 class="data-card-title">${league.name || "-"}</h3>
+          <p class="data-card-subtitle">${league.country || "-"}</p>
+
+          <div class="data-card-stats">
+            <p>Level: ${league.level || "-"}</p>
+            <p>Founded: ${league.founded || "-"}</p>
+          </div>
+        </div>
+      </article>
+    `).join("")
+    : `<div class="data-card-empty">No leagues added yet.</div>`;
+
+  if (grid) grid.innerHTML = html;
+  if (homeGrid) homeGrid.innerHTML = leagues.slice(0, 3).length
+    ? leagues.slice(0, 3).map((league) => `
+      <article class="data-card">
+        <div class="data-card-media logo" ${getImageBackground(league.logo)}></div>
+        <div class="data-card-body">
+          <h3 class="data-card-title">${league.name || "-"}</h3>
+          <p class="data-card-subtitle">${league.country || "-"}</p>
+          <div class="data-card-stats">
+            <p>Level: ${league.level || "-"}</p>
+            <p>Founded: ${league.founded || "-"}</p>
+          </div>
+        </div>
+      </article>
+    `).join("")
+    : `<div class="data-card-empty">No leagues added yet.</div>`;
+}
 document.addEventListener("DOMContentLoaded", function () {
   try {
     createSeedData();
@@ -423,10 +550,16 @@ document.addEventListener("DOMContentLoaded", function () {
     populateClubOptions();
     populateLeagueOptions();
     setupForms();
+
     renderPlayersList();
     renderClubsList();
     renderLeaguesList();
-    console.log("TWF admin loaded successfully");
+
+    renderPublicPlayers();
+    renderPublicClubs();
+    renderPublicLeagues();
+
+    console.log("TWF loaded successfully");
   } catch (error) {
     console.error("Init error:", error);
     showAdminMessage("There is a setup error in the admin panel.", true);
